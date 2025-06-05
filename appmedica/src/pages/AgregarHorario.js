@@ -1,5 +1,3 @@
-// Ejemplo simplificado de un componente que el Admin usa para crear horarios
-
 import { useState } from "react";
 import { db, auth } from "../firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
@@ -54,7 +52,16 @@ export default function AgregarHorario() {
       />
       <br /><br />
 
-      <button type="submit">Guardar Horario</button>
+      <button type="submit" style={{
+        backgroundColor: "#2b6cb0",
+        color: "white",
+        border: "none",
+        padding: "0.5rem 1rem",
+        borderRadius: "4px",
+        cursor: "pointer",
+        marginTop: "1rem"
+      }} > Guardar Horario</button>
+
     </form>
   );
 }

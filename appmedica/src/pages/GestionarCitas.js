@@ -1,5 +1,3 @@
-// src/pages/GestionarCitas.js
-
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -13,17 +11,17 @@ import {
 import { db, auth } from "../firebase";
 
 export default function GestionarCitas() {
-  // 1) Estado: lista de citas (sin pacienteNombre por ahora)
+  // 1) Estado: lista de citas (incluye horarioId)
   const [citas, setCitas] = useState([]);
   const [cargando, setCargando] = useState(true);
 
-  // 2) Estado para mapear pacienteId -> nombre actual
+  // 2) Mapeo pacienteId -> nombre actual
   const [nombresPacientes, setNombresPacientes] = useState({});
 
-  // 3) UID del médico actualmente autenticado
+  // 3) UID del médico autenticado
   const medicoId = auth.currentUser?.uid;
 
-  // 4) useEffect para cargar las citas (solo campos básicos)
+  // 4) useEffect para cargar las citas de este médico
   useEffect(() => {
     if (!medicoId) {
       setCitas([]);
@@ -38,14 +36,15 @@ export default function GestionarCitas() {
         const q = query(colRef, where("medicoId", "==", medicoId));
         const snapshot = await getDocs(q);
 
-        // Solo tomamos los campos básicos (sin pacienteNombre)
         const arr = snapshot.docs.map((docSnap) => ({
           id: docSnap.id,
           pacienteId: docSnap.data().pacienteId,
           fecha: docSnap.data().fecha,
           estado: docSnap.data().estado,
-          // Si tienes otros campos (especialidad, horarioId, etc.), inclúyelos aquí
+          horarioId: docSnap.data().horarioId, 
+          // ¡Asegúrate de que tu documento "citas" en Firestore tiene este campo `horarioId`!
         }));
+        console.log("→ Citas cargadas:", arr);
         setCitas(arr);
       } catch (error) {
         console.error("Error cargando citas:", error);
@@ -58,25 +57,18 @@ export default function GestionarCitas() {
     cargarCitas();
   }, [medicoId]);
 
-  // 5) useEffect que, cada vez que cambie `citas`, carga los nombres de usuario faltantes
+  // 5) useEffect para cargar nombres de pacientes según pacienteId
   useEffect(() => {
     const fetchNombres = async () => {
-      // Recopilamos todos los ids de paciente que aún no tengamos en el map
       const idsSinNombre = citas
         .map((c) => c.pacienteId)
         .filter((pid) => pid && !nombresPacientes[pid]);
 
-      if (idsSinNombre.length === 0) {
-        return; // Ya tenemos todos los nombres en el estado
-      }
+      if (idsSinNombre.length === 0) return;
 
-      // Para evitar duplicados, generamos un set de IDs únicos
       const uniqueIds = Array.from(new Set(idsSinNombre));
-
-      // Creamos un objeto temporal para unir resultados
       const nuevosNombres = {};
 
-      // Por cada pacienteId hacemos un getDoc
       await Promise.all(
         uniqueIds.map(async (pid) => {
           try {
@@ -89,12 +81,11 @@ export default function GestionarCitas() {
             }
           } catch (error) {
             console.error(`Error al leer usuario ${pid}:`, error);
-            nuevosNombres[pid] = "<error>";
+            nuevosNombres[pid] = "<error al leer>";
           }
         })
       );
 
-      // Actualizamos el estado uniendo con lo que ya teníamos
       setNombresPacientes((prev) => ({
         ...prev,
         ...nuevosNombres
@@ -106,25 +97,59 @@ export default function GestionarCitas() {
     }
   }, [citas, nombresPacientes]);
 
-  // 6) Función para cambiar el estado de una cita
-  const cambiarEstado = async (citaId, nuevoEstado) => {
+  // 6) Función para cambiar el estado de una cita y actualizar el horario si es negada
+  const cambiarEstado = async (citaId, nuevoEstado, horarioId) => {
+    console.log(`→ Intentando cambiar estado de cita ${citaId} a "${nuevoEstado}". HorarioId asociado: ${horarioId}`);
+
+    if (!horarioId) {
+      console.warn("   ¡No se recibió horarioId! No puedo actualizar la disponibilidad del horario.");
+    }
+
     try {
+      // 6.1) Actualizamos solo el campo 'estado' de la cita
       const refCita = doc(db, "citas", citaId);
       await updateDoc(refCita, { estado: nuevoEstado });
+      console.log(`   ✓ Cita ${citaId} actualizada a estado "${nuevoEstado}"`);
 
-      // Actualizamos el estado local de esa cita
+      // 6.2) Si el estado es "negada", reabrimos el horario (disponible: true)
+      if (nuevoEstado === "negada" && horarioId) {
+        const refHorario = doc(db, "horarios", horarioId);
+
+        // Opcional: revisa primero en consola cómo está el doc del horario
+        const horarioSnap = await getDoc(refHorario);
+        if (!horarioSnap.exists()) {
+          console.error(`   ✗ No existe el horario ${horarioId} en Firestore.`);
+        } else {
+          console.log("   • Antes de actualizar, doc horario:", horarioSnap.data());
+          await updateDoc(refHorario, { disponible: true });
+          console.log(`   ✓ Horario ${horarioId} marcado como disponible (true).`);
+        }
+      }
+
+      // 6.3) Si el estado es "confirmada" o "pendiente", aseguramos que el horario quede bloqueado (false)
+      if ((nuevoEstado === "confirmada" || nuevoEstado === "pendiente") && horarioId) {
+        const refHorario = doc(db, "horarios", horarioId);
+        const horarioSnap = await getDoc(refHorario);
+        if (horarioSnap.exists()) {
+          console.log("   • Antes de actualizar (confirmada/pendiente), doc horario:", horarioSnap.data());
+          await updateDoc(refHorario, { disponible: false });
+          console.log(`   ✓ Horario ${horarioId} marcado como no disponible (false).`);
+        }
+      }
+
+      // 6.4) Actualizamos el estado local de la cita para refrescar la UI
       setCitas((prev) =>
         prev.map((cita) =>
           cita.id === citaId ? { ...cita, estado: nuevoEstado } : cita
         )
       );
     } catch (error) {
-      console.error("Error al cambiar estado de la cita:", error);
-      alert("No se pudo actualizar el estado. Intenta otra vez.");
+      console.error("Error al cambiar estado de la cita o del horario:", error);
+      alert("Hubo un problema actualizando la cita o el horario. Revisa la consola.");
     }
   };
 
-  // 7) Función para formatear el Timestamp a cadena legible
+  // 7) Formatear Timestamp a string legible
   const formatearTimestamp = (ts) => {
     if (!ts) return "";
     const dateObj = ts.toDate();
@@ -138,7 +163,7 @@ export default function GestionarCitas() {
     return dateObj.toLocaleString("es-EC", opciones);
   };
 
-  // 8) Renderizado del componente
+  // 8) Renderizado
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "1rem" }}>
       <h2>Gestión de Citas (Mis Pacientes)</h2>
@@ -175,7 +200,6 @@ export default function GestionarCitas() {
             {citas.map((cita) => (
               <tr key={cita.id}>
                 <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                  {/* Mostramos el nombre que tenemos mapeado, o un texto si no está listo */}
                   {nombresPacientes[cita.pacienteId] || "Cargando nombre..."}
                 </td>
                 <td style={{ border: "1px solid #ccc", padding: "8px" }}>
@@ -188,7 +212,7 @@ export default function GestionarCitas() {
                   <select
                     value={cita.estado}
                     onChange={(e) =>
-                      cambiarEstado(cita.id, e.target.value)
+                      cambiarEstado(cita.id, e.target.value, cita.horarioId)
                     }
                   >
                     <option value="pendiente">Pendiente</option>
@@ -204,3 +228,4 @@ export default function GestionarCitas() {
     </div>
   );
 }
+

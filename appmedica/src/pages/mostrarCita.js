@@ -2,6 +2,7 @@ import { collection, getDocs, query, where, doc, getDoc } from "firebase/firesto
 import { db } from "../firebase";
 import { Timestamp } from "firebase/firestore";
 
+
 const obtenerCitasDePaciente = async (uid) => {
   const citasRef = collection(db, "citas");
   const q = query(citasRef, where("pacienteId", "==", uid));
@@ -26,7 +27,7 @@ const obtenerCitasDePaciente = async (uid) => {
     // Convierte el timestamp de fecha a string legible
     let fechaFormateada = "Sin fecha";
     if (citaData.fecha instanceof Timestamp) {
-      fechaFormateada = citaData.fecha.toDate().toLocaleString(); // puedes usar toLocaleDateString() si solo quieres la fecha
+      fechaFormateada = citaData.fecha.toDate().toLocaleString();
     }
 
     citas.push({
@@ -36,6 +37,7 @@ const obtenerCitasDePaciente = async (uid) => {
       motivo: citaData.motivo || "Sin motivo",
       estado: citaData.estado || "Pendiente",
       nombreMedico,
+      horarioId: citaData.horarioId || "No especificado",
     });
   }
 

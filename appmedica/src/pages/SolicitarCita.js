@@ -177,88 +177,154 @@ const SolicitarCita = () => {
     return dateObj.toLocaleString("es-EC", opciones);
   };
 
-  // 8) Renderizado del formulario
+  // 8) Estilos internos para el formulario
+  const estilos = {
+    titulo: {
+      color: "black",
+      fontSize: "1.75rem",
+      marginBottom: "1.5rem",
+      textAlign: "center",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "1.25rem",
+    },
+    label: {
+      fontWeight: "500",
+      color: "black",
+      marginBottom: "0.3rem",
+    },
+    select: {
+      padding: "0.6rem 0.8rem",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      fontSize: "1rem",
+      width: "100%",
+      boxSizing: "border-box",
+    },
+    boton: {
+      backgroundColor: "#2b6cb0",
+      color: "white",
+      border: "none",
+      padding: "0.75rem 1rem",
+      fontSize: "1rem",
+      fontWeight: "500",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginTop: "1rem",
+      alignSelf: "flex-start",
+      transition: "background-color 0.2s",
+    },
+    botonDisabled: {
+      backgroundColor: "#a0aec0",
+      cursor: "not-allowed",
+    },
+  };
+
+  // Determina si el botón debe habilitarse
+  const puedeAgendar =
+    especialidadSel !== "" && medicoSel !== "" && horarioSel !== "";
+
   return (
-    <div style={{ maxWidth: "450px", margin: "0 auto", padding: "1rem" }}>
-      <h2>Solicitar Cita</h2>
-      <form onSubmit={agendarCita}>
+    <div style={{ width: "100%" }}>
+
+      {/* Formulario */}
+      <form style={estilos.form} onSubmit={agendarCita}>
         {/* 8.1) Select de Especialidades */}
-        <label>Especialidad:</label>
-        {cargando.especialidades ? (
-          <p>Cargando especialidades...</p>
-        ) : (
-          <select
-            value={especialidadSel}
-            onChange={(e) => setEspecialidadSel(e.target.value)}
-            required
-          >
-            <option value="">-- Selecciona una especialidad --</option>
-            {especialidades.map((esp) => (
-              <option key={esp.id} value={esp.especialidad}>
-                {esp.especialidad}
-              </option>
-            ))}
-          </select>
-        )}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label htmlFor="especialidad" style={estilos.label}>
+            Especialidad
+          </label>
+          {cargando.especialidades ? (
+            <p>Cargando especialidades...</p>
+          ) : (
+            <select
+              id="especialidad"
+              value={especialidadSel}
+              onChange={(e) => setEspecialidadSel(e.target.value)}
+              required
+              style={estilos.select}
+            >
+              <option value="">-- Selecciona una especialidad --</option>
+              {especialidades.map((esp) => (
+                <option key={esp.id} value={esp.especialidad}>
+                  {esp.especialidad}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
-        {/* 8.2) Select de Médicos (filtrado por especialidadSel) */}
-        <label>Médico:</label>
-        {cargando.medicos ? (
-          <p>Cargando médicos...</p>
-        ) : (
-          <select
-            value={medicoSel}
-            onChange={(e) => setMedicoSel(e.target.value)}
-            required
-            disabled={!especialidadSel} 
-            // Sólo habilitado si ya elegiste especialidad
-          >
-            <option value="">-- Selecciona un médico --</option>
-            {medicos.map((m) => (
-              <option key={m.uid} value={m.uid}>
-                {m.nombre}
-              </option>
-            ))}
-          </select>
-        )}
+        {/* 8.2) Select de Médicos */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label htmlFor="medico" style={estilos.label}>
+            Médico
+          </label>
+          {cargando.medicos ? (
+            <p>Cargando médicos...</p>
+          ) : (
+            <select
+              id="medico"
+              value={medicoSel}
+              onChange={(e) => setMedicoSel(e.target.value)}
+              required
+              disabled={!especialidadSel}
+              style={estilos.select}
+            >
+              <option value="">-- Selecciona un médico --</option>
+              {medicos.map((m) => (
+                <option key={m.uid} value={m.uid}>
+                  {m.nombre}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
-        {/* 8.3) Select de Horarios (filtrado por medicoSel y donde disponible == true) */}
-        <label>Fecha y Hora:</label>
-        {cargando.horarios ? (
-          <p>Cargando horarios...</p>
-        ) : (
-          <select
-            value={horarioSel}
-            onChange={(e) => {
-              const idHor = e.target.value;
-              setHorarioSel(idHor);
-              // Buscamos en el array "horarios" la tupla con ese ID
-              const obj = horarios.find((h) => h.id === idHor);
-              if (obj) {
-                setTimestampSeleccionado(obj.fechaTimestamp);
-              } else {
-                setTimestampSeleccionado(null);
-              }
-            }}
-            required
-            disabled={!medicoSel} 
-            // Sólo habilitado si ya elegiste un médico
-          >
-            <option value="">-- Selecciona un horario --</option>
-            {horarios.map((h) => (
-              <option key={h.id} value={h.id}>
-                {/* Mostramos la fecha y hora formateadas */}
-                {formatearTimestamp(h.fechaTimestamp)}
-              </option>
-            ))}
-          </select>
-        )}
+        {/* 8.3) Select de Horarios */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label htmlFor="horario" style={estilos.label}>
+            Fecha y Hora
+          </label>
+          {cargando.horarios ? (
+            <p>Cargando horarios...</p>
+          ) : (
+            <select
+              id="horario"
+              value={horarioSel}
+              onChange={(e) => {
+                const idHor = e.target.value;
+                setHorarioSel(idHor);
+                const obj = horarios.find((h) => h.id === idHor);
+                if (obj) {
+                  setTimestampSeleccionado(obj.fechaTimestamp);
+                } else {
+                  setTimestampSeleccionado(null);
+                }
+              }}
+              required
+              disabled={!medicoSel}
+              style={estilos.select}
+            >
+              <option value="">-- Selecciona un horario --</option>
+              {horarios.map((h) => (
+                <option key={h.id} value={h.id}>
+                  {formatearTimestamp(h.fechaTimestamp)}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
         {/* 8.4) Botón para confirmar la cita */}
         <button
           type="submit"
-          style={{ marginTop: "1rem" }}
-          disabled={!horarioSel}
+          style={{
+            ...estilos.boton,
+            ...(puedeAgendar ? {} : estilos.botonDisabled),
+          }}
+          disabled={!puedeAgendar}
         >
           Agendar Cita
         </button>
