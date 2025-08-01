@@ -1,163 +1,162 @@
-**Guía Rápida – App de Citas Médicas 🏥**
-*(Para Pacientes y Administradores)*
+Guía Rápida – App de Citas Médicas 🏥 (Versión 2.0)
 
-Link: https://appmedica-9a1c9.web.app/
+Link de producción: https://appmedica-9a1c9.web.app/
 
 ---
 
 ## 1. Ingreso a la App 🔑
-
-* Abre tu navegador e ingresa la dirección web de la aplicación.
-* Haz clic en el botón **“Iniciar sesión con Google”** para acceder con tu cuenta.
-
-> • Si eres **paciente**, serás dirigido al panel de Paciente.
-> • Si eres **administrador/médico**, serás dirigido al panel de Administrador.
+1. Abre tu navegador e ingresa la URL de la aplicación.  
+2. Haz clic en **“Iniciar sesión con Google”**.  
+   - Si tu rol es **paciente**, irás al **Panel de Paciente**.  
+   - Si tu rol es **administrador/médico**, irás al **Panel de Administrador**.
 
 ---
 
 ## 2. Panel de Paciente 👩‍⚕️
 
 ### 2.1 Menú Lateral 🗂️
-
-* **Mi Perfil** 👤
-* **Solicitar Cita** 🗓️
-* **Mis Citas** 📋
+- **Mi Perfil** 👤  
+- **Solicitar Cita** 🗓️  
+- **Mis Citas** 📋  
 
 ### 2.2 Mi Perfil 👤
+1. Completa/actualiza:
+   - Nombre completo  
+   - Cédula  
+   - Teléfono  
+   - Dirección  
+   - Género  
+2. Presiona **“Guardar Cambios”** 💾.  
+3. Verás: **“Perfil actualizado correctamente”** ✅.  
 
-* Rellena o actualiza tus datos:
-
-  * Nombre completo
-  * Cédula (o documento)
-  * Teléfono
-  * Dirección
-  * Género
-* Presiona **“Guardar Cambios”** 💾.
-* Verás una confirmación: “Perfil actualizado correctamente” ✅.
-
-> Mantén tu información al día para que tu médico te pueda contactar fácilmente.
+---
 
 ### 2.3 Solicitar Cita 🗓️
+1. Ve a **Solicitar Cita**.  
+2. Selecciona:
+   - **Especialidad** (e.g. Cardiología)  
+   - **Médico** disponible  
+   - **Horario** libre  
+3. Haz clic en **“Agendar Cita”** 📩.  
+4. Mensaje: **“¡Cita agendada con éxito!”** 🎉.  
+5. Ese turno pasa a **ocupado**.
 
-1. Haz clic en **“Solicitar Cita”**.
-2. Completa estos campos:
-
-   1. **Especialidad**: elige el área médica que necesitas (ej. Cardiología, Pediatría).
-   2. **Médico**: selecciona uno de los profesionales disponibles en esa especialidad.
-   3. **Fecha y Hora**: elige un turno libre que te convenza.
-3. Presiona **“Agendar Cita”** 📩.
-4. Verás el mensaje “¡Cita agendada con éxito!” 🎉.
-
-> El turno que eliges se marca como “ocupado” para otros pacientes.
+---
 
 ### 2.4 Mis Citas 📋
+1. Abre **Mis Citas** para ver:
+   - 🩺 Especialidad  
+   - 👨‍⚕️ Doctor  
+   - 📅 Fecha y Hora  
+   - 📌 Estado:  
+     - 🔵 Pendiente  
+     - ✅ Confirmada  
+     - ❌ Negada  
+2. **Filtros** (historial):
+   - Fecha “Desde” / “Hasta”  
+   - Especialidad  
+   - Estado  
+3. Para **cancelar** (si Pendiente/Confirmada):
+   - Pulsa **“Cancelar Cita”** 🗑️ → confirma.  
+   - La cita se elimina y el turno se libera 🔄.
 
-* Haz clic en **“Mis Citas”** para ver la lista de tus solicitudes.
-* Cada cita muestra:
-
-  * 🩺 **Especialidad**
-  * 👨‍⚕️ **Doctor**
-  * 📅 **Fecha y Hora**
-  * 📌 **Estado**:
-
-    * 🔵 *Pendiente* (el médico aún no respondió)
-    * ✅ *Confirmada* (el médico aceptó)
-    * ❌ *Negada* (el médico no puede asistir)
-* Si tu cita está en estado *Pendiente* o *Confirmada*, verás un botón **“Cancelar Cita”** 🗑️.
-
-  1. Haz clic para cancelar.
-  2. Confirma en la ventana emergente (“¿Estás seguro?”).
-  3. La cita se elimina y ese turno vuelve a estar libre 🔄.
-
-> Si la cita ya está *Negada*, el botón de cancelar estará desactivado.
+---
 
 ### 2.5 Recordatorios 🔔
-
-* Cuando el médico confirme tu cita, el estado pasará a *Confirmada*.
-* Antes de la cita, recibirás un **recordatorio por correo** ✉️ y/o **WhatsApp** 💬 (simulado en la app).
-
-  * El mensaje te recordará la fecha, hora y nombre del doctor.
-
-> Así no olvidarás tu turno.
+- Cuando el médico **confirma**, el estado cambia a Confirmada.  
+- Recibirás aviso (correo/WhatsApp simulado)  
+  **24 h antes** y **horas previas** a la cita.
 
 ---
 
 ## 3. Panel de Administrador/Médico 👨‍⚕️
 
 ### 3.1 Menú Lateral 🗂️
-
-* **Mi Perfil** 👤
-* **Agregar Horario** 📆
-* **Gestión de Citas** 📋
+- **Mi Perfil** 👤  
+- **Agregar Horario** 📆  
+- **Gestión de Citas** 📋  
+- **Reportes** 📊  
 
 ### 3.2 Mi Perfil 👤
+1. Completa/actualiza:
+   - Nombre  
+   - Cédula  
+   - Teléfono  
+   - Especialidad  
+2. Haz clic en **“Guardar Cambios”** 💾 → **“Perfil actualizado correctamente”** ✅.
 
-* Completa o actualiza tu información:
-
-  * Nombre completo
-  * Cédula (o documento)
-  * Teléfono
-  * Selecciona tu **Especialidad** (ej. Cardiología, Pediatrics)
-* Presiona **“Guardar Cambios”** 💾.
-* Verás “Perfil actualizado correctamente” ✅.
-
-> Asegúrate de elegir la especialidad correcta para que los pacientes te encuentren.
+---
 
 ### 3.3 Agregar Horario 📆
+1. Entra a **Agregar Horario**.  
+2. Opciones:
+   - **Generar franjas** por defecto  
+   - **Crear manual**: elige fecha/hora → “Guardar Horario” 💾  
+3. Mensaje: **“¡Horario agregado con éxito!”** 🎉.  
 
-1. Haz clic en **“Agregar Horario”**.
-2. Selecciona la fecha y hora que deseas ofrecer.
-3. Presiona **“Guardar Horario”** 💾.
-4. Aparecerá el mensaje “¡Horario agregado con éxito!” 🎉.
-
-> Los turnos que agregas aparecerán en la lista de opciones para los pacientes.
+---
 
 ### 3.4 Gestión de Citas 📋
-
-* Haz clic en **“Gestión de Citas”** para ver todas las solicitudes que te han hecho.
-* Cada entrada muestra:
-
-  * 👤 **Nombre del Paciente**
-  * 📅 **Fecha y Hora**
-  * 📌 **Estado Actual** (*Pendiente*, *Confirmada* o *Negada*)
-* Para cambiar el estado de una cita, usa el menú desplegable al lado de cada solicitud:
-
-  * Selecciona **“Confirmada”** ✅ para aceptar la cita.
-  * Selecciona **“Negada”** ❌ para rechazarla.
-* Si rechazas la cita, el turno asociado vuelve a estar libre para otros pacientes 🔄.
-* Si confirmas, el paciente recibirá un recordatorio antes del día de la cita.
-
-> Mantén actualizada tu agenda para que los pacientes siempre vean horarios reales disponibles.
+1. Accede a **Gestión de Citas**.  
+2. Cada fila muestra:
+   - 👤 Paciente  
+   - 📅 Fecha y Hora  
+   - 📌 Estado Actual  
+3. Desplegable para cambiar a:  
+   - ✅ Confirmada → cita aceptada  
+   - ❌ Negada → cita rechazada + libera horario 🔄  
+4. Confirmar/Negar actualiza instantáneamente ambos lados.
 
 ---
 
-## 4. Cierre de Sesión y Seguridad 🔒
-
-* Para cerrar sesión, simplemente cierra la ventana o pestaña del navegador.
-* La aplicación no guarda contraseñas; todo se maneja de forma segura mediante tu cuenta de Google.
-
----
-
-## 5. Resumen Final ✅
-
-### Para Pacientes:
-
-1. Inicia sesión con Google.
-2. Completa tu perfil (nombre, teléfono, etc.).
-3. Solicita cita → elige especialidad, médico y turno → “Agendar Cita”.
-4. Revisa tus citas en “Mis Citas” y cancela si lo necesitas.
-5. Recibe recordatorios (correo/WhatsApp) antes de tu turno.
-
-### Para Administradores/Médicos:
-
-1. Inicia sesión con Google.
-2. Completa tu perfil (nombre, cédula, teléfono, especialidad).
-3. Agrega tus horarios disponibles en “Agregar Horario”.
-4. Revisa y gestiona solicitudes en “Gestión de Citas” → confirma o rechaza.
-5. Al rechazar, el turno se libera para otros pacientes.
-
-¡Y listo! Con estos simples pasos estarás usando la app de citas médicas de manera fácil y rápida. 😊
+### 3.5 Reportes 📊
+1. Ve a **Reportes**.  
+2. Filtra por:
+   - Nombre de Médico  
+   - Especialidad  
+   - Fecha “Desde” / “Hasta”  
+3. **Generar Vista Previa**: tabla con  
+   - Total Citas  
+   - Total Horarios  
+   - % Ocupación  
+4. **Descargar**:
+   - 📄 **PDF**  
+   - 📑 **Excel**  
+5. Usa informes para calibrar carga y disponibilidad.
 
 ---
 
-© 2025 Clínica San Sebastián.
+## 4. Ajustes de Interfaz y Móvil 📱
+- Diseño responsivo: sidebar colapsa en menú hamburguesa.  
+- Formularios adaptados a pantallas pequeñas.  
+- Botones grandes y feedback táctil.
+
+---
+
+## 5. Despliegue y Herramientas 🚀
+- **Backend**: Jakarta EE (WildFly) o Spring Boot + PostgreSQL + REST API  
+- Durante desarrollo: expón con **ngrok**  
+- **Frontend**: React + Firebase Hosting (HTTPS automático)  
+- Ajusta `ngrok-skip-browser-warning` en peticiones al API.
+
+---
+
+## 6. Cierre de Sesión y Seguridad 🔒
+- Cierra la pestaña o usa “Cerrar sesión” en menú.  
+- Autenticación segura con Google OAuth2.  
+- No se almacenan contraseñas locales.
+
+---
+
+## 7. Resumen Final ✅
+
+**Para Pacientes**  
+1. Login Google → completa perfil → solicita y gestiona citas → recibe recordatorios.  
+
+**Para Administradores/Médicos**  
+1. Login Google → configura perfil → añade horarios → gestiona solicitudes → analiza reportes.  
+
+¡Listo! Con estos pasos aprovechas al máximo la versión 2.0 de la App de Citas Médicas. 😊
+
+© 2025 Clínica San Sebastián.  
+
